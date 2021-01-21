@@ -1,4 +1,7 @@
 'use strict';
+
+const webvttImport = ('../../vendor/webvtt');
+
 export default function (playerInstance, options) {
     playerInstance.setupThumbnailPreviewVtt = () => {
         playerInstance.sendRequest(
@@ -189,10 +192,8 @@ export default function (playerInstance, options) {
         playerInstance.generateTimelinePreviewTags();
 
         if ('VTT' === timelinePreview.type && typeof timelinePreview.file === 'string') {
-            import(/* webpackChunkName: "webvtt" */ '../../vendor/webvtt').then((it) => {
-                window.WebVTTParser = it.default;
-                playerInstance.setupThumbnailPreviewVtt();
-            });
+            window.WebVTTParser = webvttImport.default;
+            playerInstance.setupThumbnailPreviewVtt();
         } else if ('static' === timelinePreview.type && typeof timelinePreview.frames === 'object') {
             timelinePreview.spriteImage = true;
             playerInstance.timelinePreviewData = timelinePreview.frames;

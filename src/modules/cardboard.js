@@ -1,4 +1,7 @@
 'use strict';
+
+const panolens = import('panolens');
+
 export default function (playerInstance, options) {
     playerInstance.createCardboardJoystickButton = (identity) => {
         const vrJoystickPanel = document.getElementById(playerInstance.videoPlayerId + '_fluid_vr_joystick_panel');
@@ -15,9 +18,9 @@ export default function (playerInstance, options) {
         const go = playerInstance.vrROTATION_POSITION;
         const back = -playerInstance.vrROTATION_POSITION;
         const pos = param < 1 ? go : back;
-        const easing = {val: pos};
+        const easing = { val: pos };
         const tween = new TWEEN.Tween(easing)
-            .to({val: 0}, playerInstance.vrROTATION_SPEED)
+            .to({ val: 0 }, playerInstance.vrROTATION_SPEED)
             .easing(TWEEN.Easing.Quadratic.InOut)
             .onUpdate(function () {
                 playerInstance.vrViewer.OrbitControls.rotateLeft(easing.val)
@@ -28,9 +31,9 @@ export default function (playerInstance, options) {
         const go = playerInstance.vrROTATION_POSITION;
         const back = -playerInstance.vrROTATION_POSITION;
         const pos = param < 1 ? go : back;
-        const easing = {val: pos};
+        const easing = { val: pos };
         const tween = new TWEEN.Tween(easing)
-            .to({val: 0}, playerInstance.vrROTATION_SPEED)
+            .to({ val: 0 }, playerInstance.vrROTATION_SPEED)
             .easing(TWEEN.Easing.Quadratic.InOut)
             .onUpdate(function () {
                 playerInstance.vrViewer.OrbitControls.rotateUp(easing.val)
@@ -337,10 +340,8 @@ export default function (playerInstance, options) {
             .display = 'inline-block';
 
         if (!window.PANOLENS) {
-            import(/* webpackChunkName: "panolens" */ 'panolens').then((it) => {
-                window.PANOLENS = it;
-                playerInstance.createCardboardView();
-            });
+            window.PANOLENS = panolens;
+            playerInstance.createCardboardView();
         } else {
             playerInstance.createCardboardView();
         }

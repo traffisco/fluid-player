@@ -1,5 +1,7 @@
 'use strict';
 
+const dashjsImport = import('dashjs');
+const hlsjsImport = import('hls.js');
 // Prevent DASH.js from automatically attaching to video sources by default.
 // Whoever thought this is a good idea?!
 if (typeof window !== 'undefined' && !window.dashjs) {
@@ -16,10 +18,8 @@ export default function (playerInstance, options) {
             case 'application/dash+xml': // MPEG-DASH
                 if (!playerInstance.dashScriptLoaded && (!window.dashjs || window.dashjs.isDefaultSubject)) {
                     playerInstance.dashScriptLoaded = true;
-                    import(/* webpackChunkName: "dashjs" */ 'dashjs').then((it) => {
-                        window.dashjs = it.default;
-                        playerInstance.initialiseDash();
-                    });
+                    window.dashjs = dashjsImport.default;
+                    playerInstance.initialiseDash();
                 } else {
                     playerInstance.initialiseDash();
                 }
@@ -27,10 +27,8 @@ export default function (playerInstance, options) {
             case 'application/x-mpegurl': // HLS
                 if (!playerInstance.hlsScriptLoaded && !window.Hls) {
                     playerInstance.hlsScriptLoaded = true;
-                    import(/* webpackChunkName: "hlsjs" */ 'hls.js').then((it) => {
-                        window.Hls = it.default;
-                        playerInstance.initialiseHls();
-                    });
+                    window.Hls = hlsjsImport.default;
+                    playerInstance.initialiseHls();
                 } else {
                     playerInstance.initialiseHls();
                 }

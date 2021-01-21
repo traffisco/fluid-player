@@ -1,4 +1,6 @@
 'use strict';
+const videojsvttjsImport = import('videojs-vtt.js');
+
 export default function (playerInstance, options) {
     playerInstance.subtitleFetchParse = (subtitleItem) => {
         playerInstance.sendRequest(
@@ -71,13 +73,13 @@ export default function (playerInstance, options) {
         }
 
         const tracks = [];
-        tracks.push({'label': subtitlesOff, 'url': 'na', 'lang': subtitlesOff});
+        tracks.push({ 'label': subtitlesOff, 'url': 'na', 'lang': subtitlesOff });
 
         const tracksList = playerInstance.domRef.player.querySelectorAll('track');
 
         [].forEach.call(tracksList, function (track) {
             if (track.kind === 'metadata' && track.src) {
-                tracks.push({'label': track.label, 'url': track.src, 'lang': track.srclang});
+                tracks.push({ 'label': track.label, 'url': track.src, 'lang': track.srclang });
             }
         });
 
@@ -205,9 +207,7 @@ export default function (playerInstance, options) {
             return;
         }
 
-        import(/* webpackChunkName: "vttjs" */ 'videojs-vtt.js').then((it) => {
-            window.WebVTT = it.WebVTT;
-            playerInstance.createSubtitlesSwitch();
-        });
+        window.WebVTT = videojsvttjsImport.WebVTT;
+        playerInstance.createSubtitlesSwitch();
     };
 }
